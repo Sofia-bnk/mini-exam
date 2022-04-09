@@ -13,12 +13,14 @@
     >
       <h2>{{ q.id }}. {{ q.question }}</h2>
       <div class="choicesWrapper">
-        <p v-for="a in q.answers" :key="a.id">
-          <span>{{ a.id }}. {{ a.answer }}</span>
-          <input
-            type="checkbox"
-            @change="(e) => onChange(q.id, a.id, e.target.value === 'on')"
-          />
+        <p v-for="a in q.answers" :key="a.id" class="choiceWrapper">
+          <label class="choice"
+            >{{ a.answer }}
+            <input
+              type="checkbox"
+              @change="(e) => onChange(q.id, a.id, e.target.checked)"
+            />
+          </label>
           <span class="correctAnswers" v-if="this.show && a.status === true">{{
             a.status
           }}</span>
@@ -37,7 +39,9 @@
           {{ this.incorrectsAnswers.length }}
         </p>
       </div>
-      <button class="submitBtn" @click="onSubmit">Submit</button>
+      <button :class="this.show ? 'submitted' : 'submitBtn'" @click="onSubmit">
+        {{ this.show ? "Submitted" : "Submit" }}
+      </button>
     </footer>
   </div>
 </template>
@@ -63,6 +67,10 @@ export default {
     );
   },
   methods: {
+    isSelected(questionId, answerId) {
+      const key = questionId + "-" + answerId;
+      return this.answers.get(key) === true;
+    },
     onChange(questionId, answerId, answer) {
       const key = questionId + "-" + answerId;
       this.answers.set(key, answer);
@@ -90,7 +98,7 @@ export default {
           this.incorrect = this.incorrect + 1;
           this.incorrectsAnswers.push(question);
         }
-      } else null;
+      }
     },
     onSubmit() {
       this.exam.questions.map((q) => {
@@ -108,6 +116,27 @@ export default {
 #question {
   padding: 1em;
 }
+.choiceWrapper {
+  margin-top: 2em;
+}
+.choice {
+  cursor: pointer;
+  padding: 1em;
+  padding-top: 0.8em;
+  padding-right: 1.6em;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+}
+.choice > input[type="checkbox"] {
+  transform: scale(1);
+  position: absolute;
+  top: -0.3em;
+}
+
 .correct {
   background-color: rgba(0, 255, 55, 0.164);
 }
@@ -116,6 +145,7 @@ export default {
   padding: 1em;
 }
 .correctAnswers {
+  margin-left: 0.5em;
   color: #962407;
 }
 .score {
@@ -152,6 +182,11 @@ footer {
 .submitBtn {
   background-color: #e76f51;
   color: white;
+  min-width: 40em;
+}
+.submitted {
+  background-color: gray;
+  color: black;
   min-width: 40em;
 }
 header {

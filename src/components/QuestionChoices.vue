@@ -1,15 +1,16 @@
 <template>
   <div class="choices">
     <input v-model="update.answer" @change="onChangeText" />
-    <input
-      class="status"
-      type="checkbox"
-      v-model="update.status"
-      @change="onChangeChackbox"
-    />
-    <span class="checkboxLabel">{{
-      update.status ? "Correct" : "Incorrect"
-    }}</span>
+
+    <label class="checkboxLabel">
+      <input
+        class="status"
+        type="checkbox"
+        v-model="update.status"
+        @change="onChangeChackbox"
+      />
+      {{ update.status ? "Correct" : "Incorrect" }}
+    </label>
   </div>
 </template>
 
@@ -47,12 +48,7 @@ export default {
   padding-right: 1em;
   width: 100%;
 }
-.status {
-  padding: 1em;
-  width: 1em;
-  height: 1em;
-}
 .checkboxLabel {
-  min-width: 5em;
+  min-width: 8em;
 }
 </style>

@@ -29,6 +29,10 @@ input {
   font-size: 1em;
   height: 1em;
 }
+input[type="checkbox"] {
+  margin: 0.5em;
+  transform: scale(1.8);
+}
 button {
   width: 10em;
   cursor: pointer;

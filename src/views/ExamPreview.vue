@@ -7,8 +7,12 @@
         <h2>{{ q.id }}. {{ q.question }}</h2>
         <div class="choicesWrapper">
           <p v-for="a in q.answers" :key="a.id">
-            <span>{{ a.id }}. {{ a.answer }}</span>
-            <input type="checkbox" :checked="a.status ? true : false" />
+            <span>{{ a.answer }}</span>
+            <input
+              type="checkbox"
+              disabled
+              :checked="a.status ? true : false"
+            />
           </p>
         </div>
       </div>
@@ -51,5 +55,10 @@ h2 {
   flex-wrap: wrap;
   width: 100%;
   align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+}
+input[type="checkbox"] {
+  transform: scale(1.5);
 }
 </style>
