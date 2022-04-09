@@ -6,16 +6,16 @@
     </div>
     <div class="choicesWrapper">
       <label class="label">Answers</label>
-      <div v-for="a in this.update.answers" :key="a.id">
-        <QuestionChoices
-          :answer="a"
-          @on-change-checkbox="onChangeCheckbox"
-          @on-change-text="onChangeText"
-        />
+      <div class="choices">
+        <div v-for="a in this.update.answers" :key="a.id">
+          <QuestionChoices
+            :answer="a"
+            @on-change-checkbox="onChangeCheckbox"
+            @on-change-text="onChangeText"
+          />
+        </div>
+        <button class="addAnswers" @click="onAddAnswer">Add Answer</button>
       </div>
-      <button class="addAnswers" @click="onAddAnswer" v-if="save === false">
-        Add Answer
-      </button>
     </div>
   </div>
 </template>
@@ -30,7 +30,6 @@ export default {
     return {
       count: 0,
       update: this.examQuestion,
-      save: false,
       disable: false,
     };
   },
@@ -62,22 +61,33 @@ export default {
       this.update.answers[foundIndex] = updatedAnswer;
       this.$emit("on-save", this.update);
     },
-    onSaveBtn() {
-      if (this.save === false) {
-        this.save = true;
-      }
-      //this.$emit("on-save", this.update);
-    },
   },
 };
 </script>
 <style scoped>
+.question {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+.choices {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 0.6em;
+}
+.addAnswers {
+  padding: 0.7em;
+  height: 2.5em;
+}
 .addAnswers:hover {
   background-color: #dfdfdf;
   color: #35495e;
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
+
 .questionAnswers {
   min-height: 15vh;
   background: #184e77;
@@ -91,21 +101,8 @@ export default {
   max-width: 100%;
   margin-bottom: 2em;
 }
-.choicesWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  align-items: center;
-}
-
-.question {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-}
 .questionInput {
-  width: 90em;
+  width: 100%;
   margin-right: 3em;
 }
 

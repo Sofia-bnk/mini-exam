@@ -4,7 +4,12 @@
     <div
       v-for="q in exam.questions"
       :key="q.id"
-      :class="this.incorrectsAnswers.includes(q.id) ? 'incorrect' : 'question'"
+      :class="
+        this.show && this.incorrectsAnswers.includes(q.id)
+          ? 'incorrect'
+          : this.show && 'correct'
+      "
+      id="question"
     >
       <h2>{{ q.id }}. {{ q.question }}</h2>
       <div class="choicesWrapper">
@@ -26,6 +31,10 @@
         <p>
           Incorrect Answers:
           {{ this.incorrect }}
+        </p>
+        <p>
+          Incorrect Questions:
+          {{ this.incorrectsAnswers.length }}
         </p>
       </div>
       <button class="submitBtn" @click="onSubmit">Submit</button>
@@ -77,11 +86,11 @@ export default {
       if (correctAnswer) {
         if (this.answers.get(id)) {
           this.correct = this.correct + 1;
+        } else {
+          this.incorrect = this.incorrect + 1;
+          this.incorrectsAnswers.push(question);
         }
-        this.incorrect = this.incorrect + 1;
-        this.incorrectsAnswers.push(question);
-      }
-      null;
+      } else null;
     },
     onSubmit() {
       this.exam.questions.map((q) => {
@@ -96,8 +105,11 @@ export default {
 };
 </script>
 <style scoped>
-.question {
+#question {
   padding: 1em;
+}
+.correct {
+  background-color: rgba(0, 255, 55, 0.164);
 }
 .incorrect {
   background-color: rgba(255, 0, 0, 0.164);
